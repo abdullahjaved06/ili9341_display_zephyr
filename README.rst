@@ -1,97 +1,57 @@
-.. zephyr:code-sample:: blinky
-   :name: Blinky
-   :relevant-api: gpio_interface
+# ILI9341 Display Driver with LVGL on Zephyr RTOS (NCS 2.9.0)
 
-   Blink an LED forever using the GPIO API.
+This repository demonstrates how to interface the ILI9341 display controller using the LVGL graphics library on Zephyr RTOS with Nordic Connect SDK (NCS) version **2.9.0**. The display communication is based on the **MIPI DBI (Display Bus Interface)** standard over SPI.
 
-Overview
-********
+---
 
-The Blinky sample blinks an LED forever using the :ref:`GPIO API <gpio_api>`.
+## 📷 Overview
 
-The source code shows how to:
+- ✅ Zephyr-based project for embedded GUIs  
+- ✅ MIPI DBI Type-C (SPI-based) interface  
+- ✅ ILI9341 TFT LCD driver  
+- ✅ LVGL for UI rendering  
+- ✅ RTT-based shell for real-time debugging  
+- ✅ Tested with NCS 2.9.0
 
-#. Get a pin specification from the :ref:`devicetree <dt-guide>` as a
-   :c:struct:`gpio_dt_spec`
-#. Configure the GPIO pin as an output
-#. Toggle the pin forever
+---
 
-See :zephyr:code-sample:`pwm-blinky` for a similar sample that uses the PWM API instead.
+## 🧠 What is MIPI DBI?
 
-.. _blinky-sample-requirements:
+**MIPI DBI (Display Bus Interface)** is a part of the MIPI Display Serial Interface standards. It's commonly used to connect display controllers (like ILI9341) to microcontrollers.
 
-Requirements
-************
+- **DBI Type C Option 3**: SPI-based serial interface (what ILI9341 uses)
+- Allows low-pin-count connection between MCU and display
+- Ideal for small, embedded displays with low refresh rate requirements
 
-Your board must:
+In this project, Zephyr’s `display` and `mipi_dbi` subsystems manage the communication with the display via SPI using a framebuffer model.
 
-#. Have an LED connected via a GPIO pin (these are called "User LEDs" on many of
-   Zephyr's :ref:`boards`).
-#. Have the LED configured using the ``led0`` devicetree alias.
+---
 
-Building and Running
-********************
+## 🧱 Hardware Requirements
 
-Build and flash Blinky as follows, changing ``reel_board`` for your board:
+- **MCU/SoC**: Nordic nRF52, nRF53, or any Zephyr-compatible board with SPI
+- **Display**: ILI9341 (320x240, SPI interface)
+- **Optional**: SEGGER RTT viewer (for shell/logs)
 
-.. zephyr-app-commands::
-   :zephyr-app: samples/basic/blinky
-   :board: reel_board
-   :goals: build flash
-   :compact:
+---
 
-After flashing, the LED starts to blink and messages with the current LED state
-are printed on the console. If a runtime error occurs, the sample exits without
-printing to the console.
+## 🛠️ Software Requirements
 
-Build errors
-************
+- **nRF Connect SDK**: Version **2.9.0**
+- **Zephyr RTOS**: Integrated into NCS
+- **West**: Build tool for Zephyr-based projects
+- **LVGL**: Integrated through Zephyr’s module system
 
-You will see a build error at the source code line defining the ``struct
-gpio_dt_spec led`` variable if you try to build Blinky for an unsupported
-board.
+---
 
-On GCC-based toolchains, the error looks like this:
+## 🔧 Configuration Highlights (`prj.conf`)
 
-.. code-block:: none
-
-   error: '__device_dts_ord_DT_N_ALIAS_led_P_gpios_IDX_0_PH_ORD' undeclared here (not in a function)
-
-Adding board support
-********************
-
-To add support for your board, add something like this to your devicetree:
-
-.. code-block:: DTS
-
-   / {
-   	aliases {
-   		led0 = &myled0;
-   	};
-
-   	leds {
-   		compatible = "gpio-leds";
-   		myled0: led_0 {
-   			gpios = <&gpio0 13 GPIO_ACTIVE_LOW>;
-                };
-   	};
-   };
-
-The above sets your board's ``led0`` alias to use pin 13 on GPIO controller
-``gpio0``. The pin flags :c:macro:`GPIO_ACTIVE_HIGH` mean the LED is on when
-the pin is set to its high state, and off when the pin is in its low state.
-
-Tips:
-
-- See :dtcompatible:`gpio-leds` for more information on defining GPIO-based LEDs
-  in devicetree.
-
-- If you're not sure what to do, check the devicetrees for supported boards which
-  use the same SoC as your target. See :ref:`get-devicetree-outputs` for details.
-
-- See :zephyr_file:`include/zephyr/dt-bindings/gpio/gpio.h` for the flags you can use
-  in devicetree.
-
-- If the LED is built in to your board hardware, the alias should be defined in
-  your :ref:`BOARD.dts file <devicetree-in-out-files>`. Otherwise, you can
-  define one in a :ref:`devicetree overlay <set-devicetree-overlays>`.
+```ini
+CONFIG_DISPLAY=y
+CONFIG_ILI9341=y
+CONFIG_LVGL=y
+CONFIG_LV_USE_LABEL=y
+CONFIG_LV_USE_BTN=y
+CONFIG_LV_FONT_MONTSERRAT_14=y
+CONFIG_USE_SEGGER_RTT=y
+CONFIG_SHELL=y

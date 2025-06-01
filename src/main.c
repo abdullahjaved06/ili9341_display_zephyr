@@ -17,7 +17,7 @@ int main(void) {
     printk("Display ready../n/r");
 
     lv_obj_t *hello_world_label = lv_label_create(lv_scr_act());
-    lv_label_set_text(hello_world_label, "Hello Display!");
+    lv_label_set_text(hello_world_label, "Hello Abdullah!");
     lv_obj_align(hello_world_label, LV_ALIGN_CENTER, 0, 0);
 
     lv_task_handler();
