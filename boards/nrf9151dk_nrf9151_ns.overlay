@@ -8,7 +8,7 @@
 
 &spi1 {
     status = "okay";
-    cs-gpios = <&gpio0 15 GPIO_ACTIVE_LOW>;
+    cs-gpios = <&gpio0 22 GPIO_ACTIVE_LOW>;  //pcb
     pinctrl-names = "default", "sleep";
     pinctrl-0 = <&spi1_default>;
     pinctrl-1 = <&spi1_sleep>;
@@ -26,9 +26,8 @@
     
     mipi_dbi {
     compatible = "zephyr,mipi-dbi-spi";
-    reset-gpios = <&gpio0 28 GPIO_ACTIVE_LOW>;
-    dc-gpios = <&gpio0 3 GPIO_ACTIVE_HIGH>;
-	// cmd-data-gpios = <&gpio0 3 GPIO_ACTIVE_LOW>; 
+    // reset-gpios = <&gpio0 28 GPIO_ACTIVE_LOW>;
+    dc-gpios = <&gpio0 23 GPIO_ACTIVE_HIGH>;  //pcb
 
 
     spi-dev = <&spi1>;
@@ -40,7 +39,6 @@
         reg = <0>;
         mipi-max-frequency = <32000000>;
        
-		// reset-gpios = <&gpio0 28 GPIO_ACTIVE_LOW>;
 	
 		width = <240>;
 		height = <320>;
@@ -80,75 +78,20 @@
 
 
 
-/* NCS: 2.5.0 */
-
-// /{
-//     chosen{
-//         zephyr,display = &ili9341;
-//     };
-// };
-
-// &spi1 {
-//     status = "okay";
-//     cs-gpios = <&gpio1 15 GPIO_ACTIVE_LOW>;
-
-//     ili9341: ili9341@0 {
-// 		compatible = "ilitek,ili9341";
-// 		reg = <0>;
-// 		spi-max-frequency = <10000000>;
-// 		label = "ILI9341";
-	
-// 		reset-gpios = <&gpio0 28 GPIO_ACTIVE_LOW>;
-// 		cmd-data-gpios = <&gpio0 3 GPIO_ACTIVE_LOW>;
-	
-// 		width = <240>;
-// 		height = <320>;
-	
-// 		// pixel-format = "rgb565";
-// 		rotation = <0>;
-// 		// display-inversion = <0>;
-	
-// 		ifmode = [40];
-// 		ifctl = [01 00 00];
-// 		pwctrla = [39 2c 00 34 02];
-// 		pwctrlb = [00 8b 30];
-// 		pwseqctrl = [55 01 23 01];
-// 		timctrla = [84 11 7a];
-// 		timctrlb = [00 00];
-// 		pumpratioctrl = [10];
-// 		enable3g = [02];
-// 		etmod = [06];
-// 		gamset = [01];
-// 		frmctr1 = [00 1b];
-// 		disctrl = [0a 82 27 04];
-// 		pwctrl1 = [21];
-// 		pwctrl2 = [10];
-// 		vmctrl1 = [31 3c];
-// 		vmctrl2 = [c0];
-	
-// 		pgamctrl = [
-// 			0f 22 1f 0a 0e 06 4d 76 3b 03 0e 04 13 0e 0c
-// 		];
-// 		ngamctrl = [
-// 			0c 23 26 04 10 04 39 24 4b 03 0b 0b 33 37 0f
-// 		];
-// 	};
-// };
-
 &pinctrl {
 	spi1_default: spi1_default {
 		group1 {
-			psels = <NRF_PSEL(SPIM_SCK, 0, 31)>,
-			        <NRF_PSEL(SPIM_MOSI, 0, 29)>,
-			        <NRF_PSEL(SPIM_MISO, 0, 30)>;
+			psels = <NRF_PSEL(SPIM_SCK, 0, 20)>,
+			        <NRF_PSEL(SPIM_MOSI, 0, 3)>,
+			        <NRF_PSEL(SPIM_MISO, 0, 21)>;
 		};
 	};
 
 	spi1_sleep: spi1_sleep {
 		group1 {
-			psels = <NRF_PSEL(SPIM_SCK, 0, 31)>,
-			        <NRF_PSEL(SPIM_MOSI, 0, 29)>,
-			        <NRF_PSEL(SPIM_MISO, 0, 30)>;
+			psels = <NRF_PSEL(SPIM_SCK, 0, 20)>,
+			        <NRF_PSEL(SPIM_MOSI, 0, 3)>,
+			        <NRF_PSEL(SPIM_MISO, 0, 21)>;
 			low-power-enable;
 		};
 	};
