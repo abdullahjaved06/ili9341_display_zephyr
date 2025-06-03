@@ -2,13 +2,23 @@
 #include <zephyr/device.h>
 #include <zephyr/devicetree.h>
 #include <zephyr/drivers/display.h>
+#include <zephyr/drivers/gpio.h>
 #include <lvgl.h>
 
 #define SLEEP_TIME_MS 10
+#define BACKLIGHTNODE DT_NODELABEL(backlight)
+
+static const struct gpio_dt_spec backlight_gpio = GPIO_DT_SPEC_GET(BACKLIGHTNODE, gpios);
 
 void main(void) {
     const struct device *display_dev;
 
+      if (!device_is_ready(backlight_gpio.port)) {
+        printk("Backlight GPIO device not ready\n");
+        return;
+    }
+    gpio_pin_configure_dt(&backlight_gpio, GPIO_OUTPUT_ACTIVE);  // Set HIGH initially
+    gpio_pin_set_dt(&backlight_gpio,1); //set HIGH
     display_dev = DEVICE_DT_GET(DT_CHOSEN(zephyr_display));
     if (!device_is_ready(display_dev)) {
         printk("Display device not ready\n");
