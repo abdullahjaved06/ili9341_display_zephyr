@@ -1,7 +1,0 @@
-default: ili9341_test_code
-build_dir: /home/abdullah/Abdullah/Projects/projects/ili9341_display_project/ili9341_test_code/build_2
-domains:
-  - name: ili9341_test_code
-    build_dir: /home/abdullah/Abdullah/Projects/projects/ili9341_display_project/ili9341_test_code/build_2/ili9341_test_code
-flash_order:
-  - ili9341_test_code
